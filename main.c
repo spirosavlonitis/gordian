@@ -30,7 +30,7 @@ int combgen(char *chars,int len)
 	total = 0;
 	b = len-1;
 	x = b-1;
-	poss = power(strlen(chars),len)/10;
+	poss = power(strlen(chars),len)/strlen(chars) +1;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 
@@ -46,11 +46,15 @@ int combgen(char *chars,int len)
 			if (!*units[b])
 			  units[b] -= strlen(chars);
 		}
-
+		while (x >= 0 && *++units[x] == '\0'){
+			units[x] -= strlen(chars);
+			--x;
+		}
+		x = b-1;
 		total += 10;
 	}
 
-	printf("%d\n",total+10);
+	printf("%d\n",total);
 
 	return 0;
 }
