@@ -1,5 +1,7 @@
+#include "hdr.h"
 #include <stdio.h>
 #include <string.h>
+#include <sys/syscall.h>
 
 int allcombs(char *chars,int len)
 {
@@ -23,7 +25,10 @@ int allcombs(char *chars,int len)
 			for (j = 0; j < len ; j++)
 				/* load the comb array*/
 				comb[j] =*units[j];
-			printf("%s",comb);
+			if (piped)
+				printf("%s",comb);
+			else
+				fputs(comb,fp);
 			/* increment the rightmost char */
 			units[b]++;
 			/* if '\0' reset*/
@@ -71,7 +76,10 @@ int matchcombs(char *chars,int len)
 					match = 1;				
 			}
 			if (match)
-				printf("%s",comb);
+				if (piped)
+					printf("%s",comb);
+				else
+					fputs(comb,fp);
 			if (!*++units[b])
 				units[b] -= n;
 		}
@@ -107,7 +115,10 @@ int uniquecombs(char *chars,int len)
 				comb[j] = *units[j];
 			}
 			if (j == len ){
+			  if(piped)
 				printf("%s",comb);
+			  else
+			  	fputs(comb,fp);
 				total += 1;
 			}
 			if (!*++units[b])
@@ -152,7 +163,10 @@ int singlecombs(char *chars,int len)
 							s = 0;
 				}
 				if (s){
+				  if (piped)
 					printf("%s",comb);
+				  else
+				  	fputs(comb,fp);
 					total++;
 				}
 			}

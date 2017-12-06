@@ -1,24 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "hdr.h"
 #include <stdarg.h>
-
-
-#define MAX_LENGTHS 10
-#define MAX_CHARS	1000
-
 
 static void readargs(int,char **);
 static void expand(char *);
 static void error(char *fmt,...);
-int allcombs(char *,int);
-int matchcombs(char *,int);
-int uniquecombs(char *,int);
-int singlecombs(char *,int);
-
-int all,matching,unique,single,piped,len[MAX_LENGTHS];
-char *chars,*prog;
-
 
 int main(int argc,char *argv[])
 {
@@ -27,13 +12,33 @@ int main(int argc,char *argv[])
 	all = 1;
 	matching = unique = single = piped = 0;
 	prog = *argv;
+	chars = NULL;
+	fp = NULL;
 
 	if (argc < 3)
 		error("Usage: %s 6 0123456789\n",prog);
 
 	readargs(argc,argv);
 	expand(expchars);
-	printf("%s\n",expchars);
+
+	if (!piped)
+		if ((fp = fopen(fname,"w")) == NULL)
+			error("%s: couldn't open %s",prog,fname);
+	for (int i = 0; len[i] ; i++)
+		if (all)
+			allcombs(expchars,len[i]);
+		else if (matching)
+			matchcombs(expchars,len[i]);
+		else if (unique)
+			uniquecombs(expchars,len[i]);
+		else
+			singlecombs(expchars,len[i]);
+	
+	if (fp)
+		fclose(fp);
+	
+
+
 	
 	exit(0);
 }
@@ -69,14 +74,17 @@ static void readargs(int argc,char **argv)
 						error("unknown option %c \n",*argv[i]);
 						break;
 				}
-			else if ((n = strlen(argv[i]) <= 2 && n >= 1 && ( l = atoi(argv[i]))))
+			else if ( (n = strlen(argv[i])) <= 2 && n >= 1 && (l = atoi(argv[i]))){
 				if (j < MAX_LENGTHS)
 					len[j++] = l;
 				else
 					error("%s: too many lengths max allowed %d",prog,MAX_LENGTHS);
-			else
+			}else if (chars == NULL)
 				chars = argv[i];
+			else if (!piped && chars)
+				fname = argv[i];
 	}
+	len[j] = 0;
 
 }
 
@@ -102,10 +110,8 @@ static void expand(char *expchars)
 					expchars[j++] = lim;
 
 			}
-
 		}else
 			expchars[j++] = chars[i];
-
 	expchars[j]	= '\0';
 }
 
