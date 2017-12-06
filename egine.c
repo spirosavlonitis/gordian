@@ -1,19 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 
-static unsigned long power(int,int);
-
 int allcombs(char *chars,int len)
 {
-	unsigned long poss;
-	register int i,j,b,x,total,n;
+	register int i,j,b,x,n;
 	char *units[len],comb[len+2];
-
-	total = 0;
+	
 	b = len-1;
 	x = b-1;
 	n = strlen(chars);
-	poss = power(n,len)/n +1;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 
@@ -37,7 +32,7 @@ int allcombs(char *chars,int len)
 		}
 		/* if x is a valid index starting one index less
 		than the right most index */
-		/* increment the char that units[x] points to */
+		/* increment the the units+x  pointer */
 		/* if *units[x] is '\0' reset untis[x] and decrement x */
 		/* repeat the process until all the first non '\0' has been found */
 		/* or all indexes have been exausted */
@@ -45,11 +40,7 @@ int allcombs(char *chars,int len)
 			units[x] -= x ? n : 0;
 		/* reset x to one inxed less than the righmost index */
 		x = b-1;
-		total += 10;
 	}
-
-	printf("%d\n",total);
-
 	return 0;
 }
 
@@ -57,7 +48,7 @@ int allcombs(char *chars,int len)
 
 int matchcombs(char *chars,int len)
 {
-	unsigned long poss,total;
+	unsigned long total;
 	register int i,j,b,x,n,match;
 	char *units[len],comb[len+2];
 
@@ -68,7 +59,6 @@ int matchcombs(char *chars,int len)
 	b = len-1;
 	x = b-1;
 	n = strlen(chars);
-	poss = power(n,len)/n + 1;
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
@@ -176,15 +166,4 @@ int singlecombs(char *chars,int len)
 	}
 	printf("%d\n",total);
 	return 0;
-}
-
-static unsigned long power(int b,int p)
-{	
-	int n;
-
-	n = b;
-	while (--p)
-		n *= b;
-	
-	return n;
 }
