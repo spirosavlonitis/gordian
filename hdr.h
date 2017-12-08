@@ -10,6 +10,8 @@ int matchcombs(char *,int);
 int uniquecombs(char *,int);
 int singlecombs(char *,int);
 
+void sizecalc(int,int *);
+
 int all,matching,unique,single,piped,len[MAX_LENGTHS];
 char *chars,*prog,*fname;
 FILE *fp;

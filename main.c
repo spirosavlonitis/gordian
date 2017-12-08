@@ -21,9 +21,11 @@ int main(int argc,char *argv[])
 	readargs(argc,argv);
 	expand(expchars);
 
-	if (!piped)
+	if (!piped){
 		if ((fp = fopen(fname,"w")) == NULL)
 			error("%s: couldn't open %s",prog,fname);
+		sizecalc(strlen(expchars),len);
+	}
 	for (int i = 0; len[i] ; i++)
 		if (all)
 			allcombs(expchars,len[i]);
@@ -37,8 +39,6 @@ int main(int argc,char *argv[])
 	if (fp)
 		fclose(fp);
 	
-
-
 	
 	exit(0);
 }
