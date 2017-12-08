@@ -7,11 +7,10 @@ int allcombs(char *chars,int len)
 	register int i,j,b,x,n;
 	char *units[len],comb[len+2];
 	
-	b = len-1;
-	x = b-1;
-	n = strlen(chars);
 	comb[len] = '\n';
 	comb[len+1] = '\0';
+	b = len-1;
+	n = strlen(chars);
 
 	/* set the pointers */
 	for (i = 0; i < len ; ++i)
@@ -33,10 +32,8 @@ int allcombs(char *chars,int len)
 		/* increment the second from the right most pointer */
 		/* if it points to '\0' reset and increment it's left handside pointer */
 		/* repeat until the first non '\0' has been reached or leftmost pointer has been incremented */
-		for (; x >= 0 && !*++units[x] ;--x)
+		for (x = b-1; x >= 0 && !*++units[x] ;--x)
 			units[x] -= x ? n : 0;
-		/* reset x */
-		x = b-1;
 	}
 	return 0;
 }
@@ -52,13 +49,12 @@ int matchcombs(char *chars,int len)
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len-1;
-	x = b-1;
 	n = strlen(chars);
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
 
-	while (*units[0]){
+	for (; *units[0] ;units[b] -= n){
 		for (i = 0; i < n ; ++i,++units[b],match = 0){
 			for (j = 0; j < len ; ++j){
 				comb[j] = *units[j];
@@ -71,10 +67,8 @@ int matchcombs(char *chars,int len)
 				else
 					fputs(comb,fp);
 		}
-		units[b] -= n;
-		for (;x >= 0 && *++units[x] == '\0';--x)
+		for (x = b-1;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
-		x = b-1;
 	}
 	return 0;
 }
@@ -87,13 +81,12 @@ int uniquecombs(char *chars,int len)
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len-1;
-	x = b-1;
 	n = strlen(chars);
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
 
-	while (*units[0]){
+	for (;*units[0];units[b] -= n){
 		for (i = 0; i < n ; ++i,++units[b]){			
 			for (j = 0; j < len ; ++j){
 				if (j <= (len-2) && ismatch((*units[j]),(*units[j+1])))
@@ -106,10 +99,8 @@ int uniquecombs(char *chars,int len)
 			  else
 			  	fputs(comb,fp);
 		}
-		units[b] -= n;
-		for (;x >= 0 && *++units[x] == '\0';--x)
+		for (x = b - 1 ;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
-		x = b-1;
 	}
 	return 0;
 }
@@ -123,15 +114,14 @@ int singlecombs(char *chars,int len)
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len -1;
-	x = b - 1;
 	n = strlen(chars);
 	s = 1;
 
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
 
-	while (*units[0]){
-		for (i = 0; i < n ; ++i){
+	for (; *units[0] ; units[b] -= n){
+		for (i = 0; i < n ; ++i,s = 1,units[b]++){
 			for (j = 0; j < len ; ++j){
 				if ( j < len-2 && ismatch((*units[j]),(*units[j+1])))
 					break;
@@ -149,13 +139,9 @@ int singlecombs(char *chars,int len)
 				  else
 				  	fputs(comb,fp);
 			}
-			units[b]++;
-			s = 1;
 		}
-		units[b] -= n;
-		for (; x >= 0 && !*++units[x] ;--x)
+		for (x = b - 1; x >= 0 && !*++units[x] ;--x)
 			units[x] -= x ? n : 0;
-		x = b -1;
 	}
 	return 0;
 }

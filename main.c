@@ -23,7 +23,7 @@ int main(int argc,char *argv[])
 
 	if (!piped){
 		if ((fp = fopen(fname,"w")) == NULL)
-			error("%s: couldn't open %s",prog,fname);
+			error("%s: couldn't open %s\n",prog,fname);
 		sizecalc(strlen(expchars),len);
 	}
 	for (int i = 0; len[i] ; i++)
