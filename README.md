@@ -1,6 +1,6 @@
 ## Gordian
 
-Gordian is a simple combination generator base mostly on the phoenix password generator.
+Gordian is a simple combination generator based on the phoenix password generator.
 
 ## Installation
 
