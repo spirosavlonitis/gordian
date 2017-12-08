@@ -1,7 +1,6 @@
 #include "hdr.h"
 #include <stdio.h>
 #include <string.h>
-#include <sys/syscall.h>
 
 int allcombs(char *chars,int len)
 {
@@ -14,6 +13,7 @@ int allcombs(char *chars,int len)
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 
+	/* set the pointers */
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
 
@@ -21,18 +21,15 @@ int allcombs(char *chars,int len)
 		/*iterate n times so that each units[b]++
 		can be printed */
 		for (i = 0; i < n ; ++i){
-			/* iterate though the unit pointers */
+			/* load the comb array*/
 			for (j = 0; j < len ; j++)
-				/* load the comb array*/
-				comb[j] =*units[j];
+				comb[j] = *units[j];
 			if (piped)
 				printf("%s",comb);
 			else
 				fputs(comb,fp);
-			/* increment the rightmost char */
-			units[b]++;
-			/* if '\0' reset*/
-			if (!*units[b])
+			/* increment the rightmost pointer and if '\0' reset */
+			if (!*++units[b])
 			  units[b] -= n;
 		}
 		/* if x is a valid index starting one index less
