@@ -18,29 +18,24 @@ int allcombs(char *chars,int len)
 		units[i] = chars;
 
 	while (*units[0]){
-		/*iterate n times so that each units[b]++
-		can be printed */
-		for (i = 0; i < n ; ++i){
-			/* load the comb array*/
-			for (j = 0; j < len ; j++)
+		/*iterate n times for each character*/
+		for (i = 0; i < n ; ++i){ 
+			/* load the comb array except from the rightmost character*/
+			for (j = 0; j < len-1 ; j++)
 				comb[j] = *units[j];
+			/* set the rightmost character */
+			comb[b] = units[b][i];
 			if (piped)
 				printf("%s",comb);
 			else
 				fputs(comb,fp);
-			/* increment the rightmost pointer and if '\0' reset */
-			if (!*++units[b])
-			  units[b] -= n;
 		}
-		/* if x is a valid index starting one index less
-		than the right most index */
-		/* increment the the units+x  pointer */
-		/* if *units[x] is '\0' reset untis[x] and decrement x */
-		/* repeat the process until all the first non '\0' has been found */
-		/* or all indexes have been exausted */
-		for (; x >= 0 && *++units[x] == '\0' ;--x)
+		/* increment the second from the right most pointer */
+		/* if it points to '\0' reset and increment it's left handside pointer */
+		/* repeat until the first non '\0' has been reached or leftmost pointer has been incremented */
+		for (; x >= 0 && !*++units[x] ;--x)
 			units[x] -= x ? n : 0;
-		/* reset x to one inxed less than the righmost index */
+		/* reset x */
 		x = b-1;
 	}
 	return 0;
@@ -50,11 +45,9 @@ int allcombs(char *chars,int len)
 
 int matchcombs(char *chars,int len)
 {
-	unsigned long total;
 	register int i,j,b,x,n,match;
 	char *units[len],comb[len+2];
 
-	total = 0;
 	match = 0;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
@@ -66,7 +59,7 @@ int matchcombs(char *chars,int len)
 		units[i] = chars;
 
 	while (*units[0]){
-		for (i = 0; i < n ; ++i,match = 0){	
+		for (i = 0; i < n ; ++i,++units[b],match = 0){
 			for (j = 0; j < len ; ++j){
 				comb[j] = *units[j];
 				if (!match && j <= (len-2) && ismatch((*units[j]),*units[j+1]))
@@ -77,9 +70,8 @@ int matchcombs(char *chars,int len)
 					printf("%s",comb);
 				else
 					fputs(comb,fp);
-			if (!*++units[b])
-				units[b] -= n;
 		}
+		units[b] -= n;
 		for (;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
 		x = b-1;
@@ -89,12 +81,9 @@ int matchcombs(char *chars,int len)
 
 int uniquecombs(char *chars,int len)
 {
-	unsigned long poss,total;
 	register int i,j,b,x,n;
-	int match;
 	char *units[len],comb[len+2];
 
-	total = 0;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len-1;
@@ -105,37 +94,32 @@ int uniquecombs(char *chars,int len)
 		units[i] = chars;
 
 	while (*units[0]){
-		for (i = 0; i < n ; ++i){			
+		for (i = 0; i < n ; ++i,++units[b]){			
 			for (j = 0; j < len ; ++j){
 				if (j <= (len-2) && ismatch((*units[j]),(*units[j+1])))
 					break;
 				comb[j] = *units[j];
 			}
-			if (j == len ){
+			if (j == len )
 			  if(piped)
 				printf("%s",comb);
 			  else
 			  	fputs(comb,fp);
-				total += 1;
-			}
-			if (!*++units[b])
-				units[b] -= n;
 		}
+		units[b] -= n;
 		for (;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
 		x = b-1;
 	}
-	printf("%ld\n",total);
 	return 0;
 }
 
 int singlecombs(char *chars,int len)
 {
-	register int i,j,k,b,x,s,total,match;
+	register int i,j,k,b,x,s;
 	int n;
 	char *units[len],comb[len],scomb[len+2];
 
-	total = 0;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len -1;
@@ -159,22 +143,19 @@ int singlecombs(char *chars,int len)
 						if (comb[j] == comb[k])
 							s = 0;
 				}
-				if (s){
+				if (s)
 				  if (piped)
 					printf("%s",comb);
 				  else
 				  	fputs(comb,fp);
-					total++;
-				}
 			}
-			if (!*++units[b])
-				units[b] -= n;
+			units[b]++;
 			s = 1;
 		}
+		units[b] -= n;
 		for (; x >= 0 && !*++units[x] ;--x)
 			units[x] -= x ? n : 0;
 		x = b -1;
 	}
-	printf("%d\n",total);
 	return 0;
 }
