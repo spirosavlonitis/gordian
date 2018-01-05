@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_WORD	1000
+
+char new_comb[MAX_WORD];
+
 int allcombs(char *chars,int len)
 {
 	register int i,j,b,x,n;
@@ -25,9 +29,23 @@ int allcombs(char *chars,int len)
 			/* set the rightmost character */
 			comb[b] = units[b][i];
 			if (piped)
-				printf("%s",comb);
+				printf("%s%s", known ? pattern : "" ,comb);
 			else
+<<<<<<< HEAD
 				fputs(comb,fp);
+=======
+				if (known){
+					sprintf(new_comb,"%s%s",pattern,comb);
+					fputs(new_comb,fp);
+				}else
+					fputs(comb,fp);
+
+			/* increment the rightmost char */
+			units[b]++;
+			/* if '\0' reset*/
+			if (!*units[b])
+			  units[b] -= n;
+>>>>>>> temp
 		}
 		/* increment the second from the right most pointer */
 		/* if it points to '\0' reset and increment it's left handside pointer */
@@ -63,9 +81,19 @@ int matchcombs(char *chars,int len)
 			}
 			if (match)
 				if (piped)
-					printf("%s",comb);
+					printf("%s%s", known ? pattern : "" ,comb);
 				else
+<<<<<<< HEAD
 					fputs(comb,fp);
+=======
+					if (known){
+						sprintf(new_comb,"%s%s",pattern,comb);
+						fputs(new_comb,fp);
+					}else
+						fputs(comb,fp);
+			if (!*++units[b])
+				units[b] -= n;
+>>>>>>> temp
 		}
 		for (x = b-1;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
@@ -93,11 +121,27 @@ int uniquecombs(char *chars,int len)
 					break;
 				comb[j] = *units[j];
 			}
+<<<<<<< HEAD
 			if (j == len )
 			  if(piped)
 				printf("%s",comb);
 			  else
 			  	fputs(comb,fp);
+=======
+			if (j == len ){
+				if (piped)
+					printf("%s%s", known ? pattern : "" ,comb);
+				else
+					if (known){
+						sprintf(new_comb,"%s%s",pattern,comb);
+						fputs(new_comb,fp);
+					}else
+						fputs(comb,fp);
+				total += 1;
+			}
+			if (!*++units[b])
+				units[b] -= n;
+>>>>>>> temp
 		}
 		for (x = b - 1 ;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
@@ -133,11 +177,25 @@ int singlecombs(char *chars,int len)
 						if (comb[j] == comb[k])
 							s = 0;
 				}
+<<<<<<< HEAD
 				if (s)
 				  if (piped)
 					printf("%s",comb);
 				  else
 				  	fputs(comb,fp);
+=======
+				if (s){
+					if (piped)
+						printf("%s%s", known ? pattern : "" ,comb);
+					else
+						if (known){
+							sprintf(new_comb,"%s%s",pattern,comb);
+							fputs(new_comb,fp);
+						}else
+							fputs(comb,fp);
+					total++;
+				}
+>>>>>>> temp
 			}
 		}
 		for (x = b - 1; x >= 0 && !*++units[x] ;--x)

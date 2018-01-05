@@ -14,7 +14,7 @@ void sizecalc(int b,int *l)
 	double s;
 	int i,c;
 
-	for (n = 0,s = 0; *l ; s += (double) n * (*l+1),l++)
+	for (n = 0,s = 0; *l ; s += (double) n * (*l+1 + (known ? strlen(pattern): 0)),l++)
 		if (all)
 			n += power(b,*l);
 		else if (matching)
@@ -39,7 +39,6 @@ void sizecalc(int b,int *l)
 	}
 
 }
-
 
 static long matchcalc(int b,int l)
 {	

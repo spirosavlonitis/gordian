@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 file.txt
 a.out
+=======
+# Ignore test file
+file.txt
+>>>>>>> temp
