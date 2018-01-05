@@ -26,7 +26,7 @@ int allcombs(char *chars,int len)
 				/* load the comb array*/
 				comb[j] =*units[j];
 			if (piped)
-				printf("%s",comb);
+				printf("%s%s", known ? pattern : "" ,comb);
 			else
 				fputs(comb,fp);
 			/* increment the rightmost char */
@@ -77,7 +77,7 @@ int matchcombs(char *chars,int len)
 			}
 			if (match)
 				if (piped)
-					printf("%s",comb);
+					printf("%s%s", known ? pattern : "" ,comb);
 				else
 					fputs(comb,fp);
 			if (!*++units[b])
@@ -116,7 +116,7 @@ int uniquecombs(char *chars,int len)
 			}
 			if (j == len ){
 			  if(piped)
-				printf("%s",comb);
+				printf("%s%s", known ? pattern : "" ,comb);
 			  else
 			  	fputs(comb,fp);
 				total += 1;
@@ -164,7 +164,7 @@ int singlecombs(char *chars,int len)
 				}
 				if (s){
 				  if (piped)
-					printf("%s",comb);
+					printf("%s%s", known ? pattern : "" ,comb);
 				  else
 				  	fputs(comb,fp);
 					total++;
