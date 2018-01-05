@@ -30,7 +30,7 @@ This program comes with 6 available options:
 	-m only combinations that have at least two matching characters will be generated, i.e 0112
 	-u only combinations that don't contain matching characters will be generated, i.e 0121
 	-s only combinations that contain different characters on each position will be generated, i.e 0123
-	-n the pattern that follows will be added to the beginning of the combinations being generated e.g -n 12 then 12***
+	-b the pattern that follows will be added to the beginning of the combinations being generated e.g -n 12 then 12***
 
 ## Contributing
 
