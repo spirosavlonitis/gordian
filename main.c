@@ -10,7 +10,7 @@ int main(int argc,char *argv[])
 	char expchars[MAX_CHARS];
 
 	all = 1;
-	matching = unique = single = piped = known = 0;
+	matching = unique = single = piped = bknown = 0;
 	prog = *argv;
 	chars = NULL;
 	fp = NULL;
@@ -70,9 +70,9 @@ static void readargs(int argc,char **argv)
 					case 'a':
 						all = 1;
 						break;
-					case 'n':
-						known = 1;
-						pattern = strdup(argv[++i]);
+					case 'b':
+						bknown = 1;
+						bpattern = strdup(argv[++i]);
 						--argc;
 						argv[i] += strlen(argv[i])-1;
 						break;

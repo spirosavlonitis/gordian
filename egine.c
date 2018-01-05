@@ -30,10 +30,10 @@ int allcombs(char *chars,int len)
 				/* load the comb array*/
 				comb[j] =*units[j];
 			if (piped)
-				printf("%s%s", known ? pattern : "" ,comb);
+				printf("%s%s", bknown ? bpattern : "" ,comb);
 			else
-				if (known){
-					sprintf(new_comb,"%s%s",pattern,comb);
+				if (bknown){
+					sprintf(new_comb,"%s%s",bpattern,comb);
 					fputs(new_comb,fp);
 				}else
 					fputs(comb,fp);
@@ -86,10 +86,10 @@ int matchcombs(char *chars,int len)
 			}
 			if (match)
 				if (piped)
-					printf("%s%s", known ? pattern : "" ,comb);
+					printf("%s%s", bknown ? bpattern : "" ,comb);
 				else
-					if (known){
-						sprintf(new_comb,"%s%s",pattern,comb);
+					if (bknown){
+						sprintf(new_comb,"%s%s",bpattern,comb);
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
@@ -129,10 +129,10 @@ int uniquecombs(char *chars,int len)
 			}
 			if (j == len ){
 				if (piped)
-					printf("%s%s", known ? pattern : "" ,comb);
+					printf("%s%s", bknown ? bpattern : "" ,comb);
 				else
-					if (known){
-						sprintf(new_comb,"%s%s",pattern,comb);
+					if (bknown){
+						sprintf(new_comb,"%s%s",bpattern,comb);
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
@@ -181,10 +181,10 @@ int singlecombs(char *chars,int len)
 				}
 				if (s){
 					if (piped)
-						printf("%s%s", known ? pattern : "" ,comb);
+						printf("%s%s", bknown ? bpattern : "" ,comb);
 					else
-						if (known){
-							sprintf(new_comb,"%s%s",pattern,comb);
+						if (bknown){
+							sprintf(new_comb,"%s%s",bpattern,comb);
 							fputs(new_comb,fp);
 						}else
 							fputs(comb,fp);

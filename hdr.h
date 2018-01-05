@@ -12,6 +12,6 @@ int singlecombs(char *,int);
 
 void sizecalc(int,int *);
 
-int all,matching,unique,single,piped,known,len[MAX_LENGTHS];
-char *chars,*prog,*fname,*pattern;
+int all,matching,unique,single,piped,bknown,len[MAX_LENGTHS];
+char *chars,*prog,*fname,*bpattern;
 FILE *fp;
