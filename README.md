@@ -23,7 +23,7 @@ You can either specify individual characters as in 0123456789, or use ranges a-z
 
 ## Options
 
-This program comes with 5 available options:
+This program comes with 6 available options:
 
 	-p when used the results are printed to screen, to be used for piping operation.
 	-a all possible combinations of the characters specified will be generated, if no option is given -a is implied.
