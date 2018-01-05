@@ -3,6 +3,10 @@
 #include <string.h>
 #include <sys/syscall.h>
 
+#define MAX_WORD	1000
+
+char new_comb[MAX_WORD];
+
 int allcombs(char *chars,int len)
 {
 	register int i,j,b,x,n;
@@ -28,7 +32,12 @@ int allcombs(char *chars,int len)
 			if (piped)
 				printf("%s%s", known ? pattern : "" ,comb);
 			else
-				fputs(comb,fp);
+				if (known){
+					sprintf(new_comb,"%s%s",pattern,comb);
+					fputs(new_comb,fp);
+				}else
+					fputs(comb,fp);
+
 			/* increment the rightmost char */
 			units[b]++;
 			/* if '\0' reset*/
@@ -79,7 +88,11 @@ int matchcombs(char *chars,int len)
 				if (piped)
 					printf("%s%s", known ? pattern : "" ,comb);
 				else
-					fputs(comb,fp);
+					if (known){
+						sprintf(new_comb,"%s%s",pattern,comb);
+						fputs(new_comb,fp);
+					}else
+						fputs(comb,fp);
 			if (!*++units[b])
 				units[b] -= n;
 		}
@@ -115,10 +128,14 @@ int uniquecombs(char *chars,int len)
 				comb[j] = *units[j];
 			}
 			if (j == len ){
-			  if(piped)
-				printf("%s%s", known ? pattern : "" ,comb);
-			  else
-			  	fputs(comb,fp);
+				if (piped)
+					printf("%s%s", known ? pattern : "" ,comb);
+				else
+					if (known){
+						sprintf(new_comb,"%s%s",pattern,comb);
+						fputs(new_comb,fp);
+					}else
+						fputs(comb,fp);
 				total += 1;
 			}
 			if (!*++units[b])
@@ -163,10 +180,14 @@ int singlecombs(char *chars,int len)
 							s = 0;
 				}
 				if (s){
-				  if (piped)
-					printf("%s%s", known ? pattern : "" ,comb);
-				  else
-				  	fputs(comb,fp);
+					if (piped)
+						printf("%s%s", known ? pattern : "" ,comb);
+					else
+						if (known){
+							sprintf(new_comb,"%s%s",pattern,comb);
+							fputs(new_comb,fp);
+						}else
+							fputs(comb,fp);
 					total++;
 				}
 			}
