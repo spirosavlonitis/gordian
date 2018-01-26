@@ -91,8 +91,9 @@ int matchcombs(char *chars,int len)
 			for (j = 0; j < len ; ++j){
 				comb[j] = *units[j];
 				if (!match && j <= (len-2) && ismatch((*units[j]),*units[j+1]))
-					match = 1;				
+					match = 1;
 			}
+			current_cmbs++;
 			if (match)
 				if (piped)
 					printf("%s%s", bknown ? bpattern : "" ,comb);
@@ -102,7 +103,6 @@ int matchcombs(char *chars,int len)
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
-					current_cmbs++;
 					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
 						fprintf(stderr, "%d%c complete\n",percent,'%');
 						p += PER_BASE; 
@@ -141,6 +141,7 @@ int uniquecombs(char *chars,int len)
 					break;
 				comb[j] = *units[j];
 			}
+			current_cmbs++;
 			if (j == len ){
 				if (piped)
 					printf("%s%s", bknown ? bpattern : "" ,comb);
@@ -150,7 +151,6 @@ int uniquecombs(char *chars,int len)
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
-					current_cmbs++;
 					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
 						fprintf(stderr, "%d%c complete\n",percent,'%');
 						p += PER_BASE; 
@@ -164,6 +164,8 @@ int uniquecombs(char *chars,int len)
 			units[x] -= x ? n : 0;
 		x = b-1;
 	}
+	if (piped != 1)
+		fprintf(stderr, "100%c complete\n",'%');
 	return 0;
 }
 
@@ -190,6 +192,7 @@ int singlecombs(char *chars,int len)
 					break;
 				comb[j] = *units[j];
 			}
+			current_cmbs++;
 			if (j == len){
 				for (j = 0; s && j < len-1 ;j++){
 					for (k = j+1; k < len ;k++)
@@ -205,7 +208,6 @@ int singlecombs(char *chars,int len)
 							fputs(new_comb,fp);
 						}else
 							fputs(comb,fp);
-						current_cmbs++;
 						if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
 							fprintf(stderr, "%d%c complete\n",percent,'%');
 							p += PER_BASE; 
@@ -221,5 +223,7 @@ int singlecombs(char *chars,int len)
 			units[x] -= x ? n : 0;
 		x = b -1;
 	}
+	if (piped != 1)
+		fprintf(stderr, "100%c complete\n",'%');
 	return 0;
 }

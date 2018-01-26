@@ -14,6 +14,7 @@ void sizecalc(int b,int *l)
 	double s;
 	int i,c;
 
+	total_cmbs = (double) power(b,*l);
 	for (n = 0,s = 0; *l ; s += (double) n * (*l+1 + (bknown ? strlen(bpattern): 0)),l++)
 		if (all)
 			n += power(b,*l);
@@ -25,7 +26,7 @@ void sizecalc(int b,int *l)
 			n += singlecal(b,*l);
 
 	printf("Combinations: %ld\n",n);
-	total_cmbs = (double) n;
+
 	for (i = 0; s >= 1024 ; ++i,s /= 1024)
 		;
 		printf("File size: %.1f%c\n",s,stype[i]);
