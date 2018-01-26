@@ -4,7 +4,10 @@
 #include <sys/syscall.h>
 
 #define MAX_WORD	1000
+#define PER_BASE 	20
 
+static double current_cmbs = 0.0;
+static int percent,p = PER_BASE;
 char new_comb[MAX_WORD];
 
 int allcombs(char *chars,int len)
@@ -22,36 +25,42 @@ int allcombs(char *chars,int len)
 		units[i] = chars;
 
 	while (*units[0]){
-		/*iterate n times so that each units[b]++
-		can be printed */
+		/*iterate n times so that each units[b]++ can be printed */
 		for (i = 0; i < n ; ++i){
 			/* iterate though the unit pointers */
 			for (j = 0; j < len ; j++)
-				/* load the comb array*/
-				comb[j] =*units[j];
+				comb[j] =*units[j];	/* load the comb array*/
 			if (piped)
 				printf("%s%s", bknown ? bpattern : "" ,comb);
-			else
+			else {
 				if (bknown){
 					sprintf(new_comb,"%s%s",bpattern,comb);
 					fputs(new_comb,fp);
 				}else
 					fputs(comb,fp);
 
+				current_cmbs++;	/* Increace combination count*/
+				if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+					fprintf(stderr, "%d%c complete\n",percent,'%');
+					p += PER_BASE; 
+				}
+			}
 			/* increment the rightmost char */
 			units[b]++;
 			/* if '\0' reset*/
-			if (!*units[b])
+			if (*units[b] == '\0')
 			  units[b] -= n;
 		}
+
 		/* if x is a valid index starting one index less
 		than the right most index */
-		/* increment the the units+x  pointer */
+		/* increment the the *(units+x)  pointer */
 		/* if *units[x] is '\0' reset untis[x] and decrement x */
-		/* repeat the process until all the first non '\0' has been found */
+		/* so the units point to its left can be accessed */
+		/* repeat the process until the first non '\0' has been found */
 		/* or all indexes have been exausted */
 		for (; x >= 0 && *++units[x] == '\0' ;--x)
-			units[x] -= x ? n : 0;
+			units[x] -= x ? n : 0; /* reset all but the very left index */
 		/* reset x to one inxed less than the righmost index */
 		x = b-1;
 	}
@@ -87,12 +96,18 @@ int matchcombs(char *chars,int len)
 			if (match)
 				if (piped)
 					printf("%s%s", bknown ? bpattern : "" ,comb);
-				else
+				else{
 					if (bknown){
 						sprintf(new_comb,"%s%s",bpattern,comb);
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
+					current_cmbs++;
+					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+						fprintf(stderr, "%d%c complete\n",percent,'%');
+						p += PER_BASE; 
+					}
+				}
 			if (!*++units[b])
 				units[b] -= n;
 		}
@@ -105,12 +120,11 @@ int matchcombs(char *chars,int len)
 
 int uniquecombs(char *chars,int len)
 {
-	unsigned long poss,total;
+	unsigned long poss;
 	register int i,j,b,x,n;
 	int match;
 	char *units[len],comb[len+2];
 
-	total = 0;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len-1;
@@ -130,13 +144,18 @@ int uniquecombs(char *chars,int len)
 			if (j == len ){
 				if (piped)
 					printf("%s%s", bknown ? bpattern : "" ,comb);
-				else
+				else {
 					if (bknown){
 						sprintf(new_comb,"%s%s",bpattern,comb);
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
-				total += 1;
+					current_cmbs++;
+					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+						fprintf(stderr, "%d%c complete\n",percent,'%');
+						p += PER_BASE; 
+					}
+				}
 			}
 			if (!*++units[b])
 				units[b] -= n;
@@ -145,17 +164,15 @@ int uniquecombs(char *chars,int len)
 			units[x] -= x ? n : 0;
 		x = b-1;
 	}
-	printf("%ld\n",total);
 	return 0;
 }
 
 int singlecombs(char *chars,int len)
 {
-	register int i,j,k,b,x,s,total,match;
+	register int i,j,k,b,x,s,match;
 	int n;
 	char *units[len],comb[len],scomb[len+2];
 
-	total = 0;
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len -1;
@@ -182,13 +199,18 @@ int singlecombs(char *chars,int len)
 				if (s){
 					if (piped)
 						printf("%s%s", bknown ? bpattern : "" ,comb);
-					else
+					else {
 						if (bknown){
 							sprintf(new_comb,"%s%s",bpattern,comb);
 							fputs(new_comb,fp);
 						}else
 							fputs(comb,fp);
-					total++;
+						current_cmbs++;
+						if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+							fprintf(stderr, "%d%c complete\n",percent,'%');
+							p += PER_BASE; 
+						}
+					}							
 				}
 			}
 			if (!*++units[b])
@@ -199,6 +221,5 @@ int singlecombs(char *chars,int len)
 			units[x] -= x ? n : 0;
 		x = b -1;
 	}
-	printf("%d\n",total);
 	return 0;
 }

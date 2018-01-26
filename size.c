@@ -25,6 +25,7 @@ void sizecalc(int b,int *l)
 			n += singlecal(b,*l);
 
 	printf("Combinations: %ld\n",n);
+	total_cmbs = (double) n;
 	for (i = 0; s >= 1024 ; ++i,s /= 1024)
 		;
 		printf("File size: %.1f%c\n",s,stype[i]);
