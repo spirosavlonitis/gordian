@@ -2,6 +2,7 @@
 #include <stdarg.h>
 
 #define MAX_CHARS	1000
+#define MAX_LENGTH 	3
 
 static void readargs(int,char **);
 static void expand(char *);
@@ -11,8 +12,8 @@ int main(int argc,char *argv[])
 {
 	char expchars[MAX_CHARS];
 
-	all = matching = unique = single = piped = bknown = 0;
-	prog = *argv;
+	matching = unique = single = piped = bknown = 0;
+	prog = *argv++;
 	chars = NULL;
 	fp = NULL;
 
@@ -45,13 +46,14 @@ int main(int argc,char *argv[])
 
 static void readargs(int argc,char **argv)
 {
-	int i,j,n,l;
+	int i,j,n;
+	char l[3];
 
 	j = 0;
-	for ( i = 1; --argc > 0 ;i++){
-		if (*argv[i] == '-')
-			while(*++argv[i])
-				switch (*argv[i]){
+	for (; --argc > 0 ;argv++){
+		if (**argv == '-')
+			while(*++*argv)
+				switch (**argv){
 					case 'p':
 						piped = 1;
 						break;
@@ -64,38 +66,45 @@ static void readargs(int argc,char **argv)
 					case 's':
 						single = 1;
 						break;
-					case 'a':
-						all = 1;
+					case 'l':
+						--argc;
+						for (++argv; **argv ;++*argv)
+							if ( **argv == ',' )
+								continue;
+							else if (j < MAX_LENGTHS){
+								for (i=0; **argv && i < 2 && **argv != ',';i++,++*argv)
+									l[i] = **argv;
+								l[i] = '\0';
+								len[j++] = atoi(l);
+								*argv -= 1;
+							}else
+								error("%s: too many lengths max allowed %d\n",prog,MAX_LENGTHS);
+							*argv -= 1;
 						break;
 					case 'b':
 						bknown = 1;
-						bpattern = strdup(argv[++i]);
+						bpattern = strdup(*++argv);
 						--argc;
-						argv[i] += strlen(argv[i])-1;
 						break;
 					case '-':
-						argv[i] += 1;
-						if (strcmp("save",argv[i]) == 0){
-							save = atoi(argv[i+1]);
+						--argc;
+						*++*argv;
+						if (strcmp("save",*argv) == 0){
+							save = atoi(*++argv);
+							*argv += strlen(*argv) -1;
 						}else
-							error("%s: unknown option %s\n",prog,argv[i]);
-						argv[i] += strlen(argv[i])-1;
+							error("%s: unknown option %s\n",prog,*argv);
 						break;
 					default:
-						error("unknown option %c \n",*argv[i]);
+						error("unknown option %c \n",**argv);
 						break;
-				}
-			else if ( (n = strlen(argv[i])) <= 2 && n >= 1 && (l = atoi(argv[i]))){
-				if (j < MAX_LENGTHS)
-					len[j++] = l;
-				else
-					error("%s: too many lengths max allowed %d",prog,MAX_LENGTHS);
 			}else if (chars == NULL)
-				chars = argv[i];
+				chars = strdup(*argv);
 			else if (!piped && chars)
-				fname = argv[i];
+				fname = strdup(*argv);
 	}
 	len[j] = 0;
+	printf("%d\n",save);
 }
 
 #define isrange(A,B)	(A >= 'A' && B <= 'Z' || A >= 'a' && B <= 'z' || A >= '0' && B <= '9' )

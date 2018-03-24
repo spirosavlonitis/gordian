@@ -16,14 +16,14 @@ void sizecalc(int b,int *l)
 
 	total_cmbs = (double) power(b,*l);
 	for (n = 0,s = 0; *l ; s += (double) n * (*l+1 + (bknown ? strlen(bpattern): 0)),l++)
-		if (all)
-			n += power(b,*l);
+		if (single)
+			n += singlecal(b,*l);
 		else if (matching)
 			n += matchcalc(b,*l);
 		else if (unique)
 			n += power(b,*l) - matchcalc(b,*l);
 		else
-			n += singlecal(b,*l);
+			n += power(b,*l);
 
 	printf("Combinations: %ld\n",n);
 
