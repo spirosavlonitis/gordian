@@ -3,7 +3,6 @@
 #include <string.h>
 
 #define MAX_LENGTHS 10
-#define MAX_CHARS	1000
 
 int allcombs(char *,int);
 int matchcombs(char *,int);

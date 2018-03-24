@@ -1,5 +1,6 @@
 # Ignore test file
 file.txt
+save.txt
 
 # Ignore temp executable
 a.out

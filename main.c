@@ -1,6 +1,8 @@
 #include "hdr.h"
 #include <stdarg.h>
 
+#define MAX_CHARS	1000
+
 static void readargs(int,char **);
 static void expand(char *);
 static void error(char *fmt,...);
@@ -9,8 +11,7 @@ int main(int argc,char *argv[])
 {
 	char expchars[MAX_CHARS];
 
-	all = 1;
-	matching = unique = single = piped = bknown = 0;
+	all = matching = unique = single = piped = bknown = 0;
 	prog = *argv;
 	chars = NULL;
 	fp = NULL;
@@ -27,18 +28,17 @@ int main(int argc,char *argv[])
 		sizecalc(strlen(expchars),len);
 	}
 	for (int i = 0; len[i] ; i++)
-		if (all)
-			allcombs(expchars,len[i]);
+		if (single)
+			singlecombs(expchars,len[i]);
 		else if (matching)
 			matchcombs(expchars,len[i]);
 		else if (unique)
 			uniquecombs(expchars,len[i]);
 		else
-			singlecombs(expchars,len[i]);
+			allcombs(expchars,len[i]);
 	
 	if (fp)
 		fclose(fp);
-	
 	
 	exit(0);
 }
@@ -57,15 +57,12 @@ static void readargs(int argc,char **argv)
 						break;
 					case 'm':
 						matching =  1;
-						all = 0;
 						break;
 					case 'u':
 						unique = 1;
-						all = 0;						
 						break;
 					case 's':
 						single = 1;
-						all = 0;						
 						break;
 					case 'a':
 						all = 1;
@@ -91,7 +88,6 @@ static void readargs(int argc,char **argv)
 				fname = argv[i];
 	}
 	len[j] = 0;
-
 }
 
 #define isrange(A,B)	(A >= 'A' && B <= 'Z' || A >= 'a' && B <= 'z' || A >= '0' && B <= '9' )
