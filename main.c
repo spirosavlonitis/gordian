@@ -6,6 +6,7 @@
 
 static void readargs(int,char **);
 static void expand(char *);
+static void simplesort(int *);
 static void error(char *fmt,...);
 
 int main(int argc,char *argv[])
@@ -22,6 +23,7 @@ int main(int argc,char *argv[])
 
 	readargs(argc,argv);
 	expand(expchars);
+	simplesort(len);
 
 	if (!piped){
 		if ((fp = fopen(fname,"w")) == NULL)
@@ -104,7 +106,7 @@ static void readargs(int argc,char **argv)
 				fname = strdup(*argv);
 	}
 	len[j] = 0;
-	printf("%d\n",save);
+
 }
 
 #define isrange(A,B)	(A >= 'A' && B <= 'Z' || A >= 'a' && B <= 'z' || A >= '0' && B <= '9' )
@@ -131,6 +133,14 @@ static void expand(char *expchars)
 		}else
 			expchars[j++] = chars[i];
 	expchars[j]	= '\0';
+}
+
+static void simplesort(int *l)
+{
+	int i,j,temp;
+	for (j = 1; l[j] ; j++)
+		for (i = j-1; i >= 0 && l[i] > l[i+1] ; --i)
+			temp = l[i],l[i] = l[i+1],l[i+1] = temp;
 }
 
 static void error(char *fmt,...)
