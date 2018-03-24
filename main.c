@@ -106,11 +106,10 @@ static void expand(char *expchars)
 					error("%s: invalid end of range\n",prog);
 				c = expchars[j-1];
 				if (isrange(c,lim))
-				while (++c <= lim)
-					expchars[j++] = c;
-				else
-					expchars[j++] = lim;
-
+					while (++c <= lim)
+						expchars[j++] = c;
+					else
+						expchars[j++] = lim;
 			}
 		}else
 			expchars[j++] = chars[i];
