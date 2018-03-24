@@ -73,6 +73,14 @@ static void readargs(int argc,char **argv)
 						--argc;
 						argv[i] += strlen(argv[i])-1;
 						break;
+					case '-':
+						argv[i] += 1;
+						if (strcmp("save",argv[i]) == 0){
+							save = atoi(argv[i+1]);
+						}else
+							error("%s: unknown option %s\n",prog,argv[i]);
+						argv[i] += strlen(argv[i])-1;
+						break;
 					default:
 						error("unknown option %c \n",*argv[i]);
 						break;
