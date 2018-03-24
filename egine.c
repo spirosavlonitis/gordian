@@ -4,10 +4,10 @@
 #include <sys/syscall.h>
 
 #define MAX_WORD	1000
-#define PER_BASE 	20
+#define PER_BASE 	20.0
 
 static double current_cmbs = 0.0;
-static int percent,p = PER_BASE;
+static float percent,p = PER_BASE;
 char new_comb[MAX_WORD];
 
 int allcombs(char *chars,int len)
@@ -40,8 +40,8 @@ int allcombs(char *chars,int len)
 					fputs(comb,fp);
 
 				current_cmbs++;	/* Increace combination count*/
-				if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
-					fprintf(stderr, "%d%c complete\n",percent,'%');
+				if (((percent = (current_cmbs / total_cmbs) * 100.0)) == p){	/* If percentage base or multiple has been reached */
+					fprintf(stderr, "%.0f%% complete\n",percent);
 					p += PER_BASE; 
 				}
 			}
@@ -103,8 +103,8 @@ int matchcombs(char *chars,int len)
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
-					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
-						fprintf(stderr, "%d%c complete\n",percent,'%');
+					if (((percent = current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+						fprintf(stderr, "%.0f%% complete\n",percent);
 						p += PER_BASE; 
 					}
 				}
@@ -151,8 +151,8 @@ int uniquecombs(char *chars,int len)
 						fputs(new_comb,fp);
 					}else
 						fputs(comb,fp);
-					if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
-						fprintf(stderr, "%d%c complete\n",percent,'%');
+					if (((percent = current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+						fprintf(stderr, "%.0f%% complete\n",percent);
 						p += PER_BASE; 
 					}
 				}
@@ -208,8 +208,8 @@ int singlecombs(char *chars,int len)
 							fputs(new_comb,fp);
 						}else
 							fputs(comb,fp);
-						if (((percent = (int) current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
-							fprintf(stderr, "%d%c complete\n",percent,'%');
+						if (((percent =  current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+							fprintf(stderr, "%.0f%% complete\n",percent);
 							p += PER_BASE; 
 						}
 					}							
@@ -224,6 +224,6 @@ int singlecombs(char *chars,int len)
 		x = b -1;
 	}
 	if (piped != 1)
-		fprintf(stderr, "100%c complete\n",'%');
+		fprintf(stderr, "100%% complete\n");
 	return 0;
 }
