@@ -8,6 +8,7 @@
 
 static double current_cmbs = 0.0;
 char new_comb[MAX_WORD];
+FILE *s_file;
 
 int allcombs(char *chars,int len)
 {
@@ -30,7 +31,7 @@ int allcombs(char *chars,int len)
 		for (i = 0; i < n ; ++i){
 			/* iterate though the unit pointers */
 			for (j = 0; j < len ; j++)
-				comb[j] =*units[j];	/* load the comb array*/
+				comb[j] =* units[j];	/* load the comb array*/
 			if (piped)
 				printf("%s%s", bknown ? bpattern : "" ,comb);
 			else {
@@ -41,9 +42,16 @@ int allcombs(char *chars,int len)
 					fputs(comb,fp);
 
 				current_cmbs++;	/* Increace combination count*/
-				if (((percent = (current_cmbs / total_cmbs) * 100.0)) == p){	/* If percentage base or multiple has been reached */
+				if (((percent = (current_cmbs / total_cmbs) * 100.0)) >= p){	/* If percentage base or multiple has been reached */
 					fprintf(stderr, "%.0f%% complete\n",percent);
-					p += PER_BASE; 
+					p += PER_BASE;
+				}
+
+				/* Restore point section */
+				if (save && percent >= save) {
+					s_file = fopen("save.txt","w");
+					fputs(comb,s_file);
+					error("Restore point set\n");
 				}
 			}
 			/* increment the rightmost char */

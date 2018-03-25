@@ -7,7 +7,6 @@
 static void readargs(int,char **);
 static void expand(char *);
 static void simplesort(int *);
-static void error(char *fmt,...);
 
 int main(int argc,char *argv[])
 {
@@ -143,7 +142,7 @@ static void simplesort(int *l)
 			temp = l[i],l[i] = l[i+1],l[i+1] = temp;
 }
 
-static void error(char *fmt,...)
+void error(char *fmt,...)
 {
 	va_list args;
 

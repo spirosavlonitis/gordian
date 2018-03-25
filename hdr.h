@@ -10,6 +10,7 @@ int uniquecombs(char *,int);
 int singlecombs(char *,int);
 
 void sizecalc(int,int *);
+void error(char *fmt,...);
 
 double total_cmbs;
 int matching,unique,single,piped,bknown,save,len[MAX_LENGTHS];
