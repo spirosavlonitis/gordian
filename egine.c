@@ -6,7 +6,7 @@
 #define MAX_WORD	1000
 #define PER_BASE 	20.0
 
-static void set_save(char *,char *,long,double);
+static void set_save(char *,char *,long,double,int);
 static void set_restore(char **,char *,double *);
 
 static double current_cmbs = 0.0;
@@ -58,7 +58,7 @@ int allcombs(char *chars,int len)
 
 				/* Save section */
 				if (save && percent >= save) 
-					set_save(comb,chars,(long) current_cmbs,percent);
+					set_save(comb,chars,(long) current_cmbs,percent,len);
 			}
 			/* increment the rightmost char */
 			units[b]++;
@@ -250,10 +250,10 @@ int singlecombs(char *chars,int len)
 }
 
 /* Set save point */
-static void set_save(char *comb,char *chars,long current_cmbs,double percent)
+static void set_save(char *comb,char *chars,long current_cmbs,double percent,int len)
 {
 	s_file = fopen("save.txt","w");
-	fprintf(s_file,"%s%ld\n",comb,current_cmbs);
+	fprintf(s_file,"%s%ld\nchars:%s\nlength:%d",comb,current_cmbs,chars,len);
 	fprintf(stderr, "%.0f%% complete\n",percent);
 	fclose(s_file);
 	error("Restore point set\n");
