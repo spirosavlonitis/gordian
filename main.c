@@ -87,6 +87,9 @@ static void readargs(int argc,char **argv)
 						bpattern = strdup(*++argv);
 						--argc;
 						break;
+					case 'r':
+						restore = 1;
+						break;
 					case '-':
 						--argc;
 						*++*argv;
