@@ -31,6 +31,10 @@ This program comes with 6 available options:
 	-u only combinations that don't contain matching characters will be generated, i.e 0121
 	-s only combinations that contain different characters on each position will be generated, i.e 0123
 	-b the pattern that follows will be added to the beginning of the combinations being generated e.g -n 12 then 12***
+	-l	specifies the length of the combinations to be generated, i.e 6 or 6,7,8
+	-r	restore last session,i.e prog_name -rl 6 0-9 filename
+	--save	saves progress to the specified percentage e.g 30,if restoring from 30% and --save 60 what is generated is 30%-60%
+
 
 ## Contributing
 
