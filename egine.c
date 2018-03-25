@@ -76,6 +76,7 @@ int allcombs(char *chars,int len)
 			units[x] -= x ? n : 0; /* reset all but the very left index */
 		/* reset x to one inxed less than the righmost index */
 		x = b-1;
+
 		/* Save section */
 		if (save && percent >= save) { 
 			for (j = 0; j < len ; j++)
@@ -140,6 +141,11 @@ int matchcombs(char *chars,int len)
 		for (;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
 		x = b-1;
+		if (save && percent >= save) { 
+			for (j = 0; j < len ; j++)
+				comb[j] =* units[j];
+			set_save(comb,chars,(long) current_cmbs,percent,len);
+		}
 	}
 	return 0;
 }
