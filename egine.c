@@ -7,19 +7,20 @@
 #define PER_BASE 	20.0
 
 static double current_cmbs = 0.0;
-static float percent,p = PER_BASE;
 char new_comb[MAX_WORD];
 
 int allcombs(char *chars,int len)
 {
 	register int i,j,b,x,n;
 	char *units[len],comb[len+2];
-	
+	float percent,p;
+
 	b = len-1;
 	x = b-1;
 	n = strlen(chars);
 	comb[len] = '\n';
 	comb[len+1] = '\0';
+	p = PER_BASE;
 
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
@@ -74,6 +75,7 @@ int matchcombs(char *chars,int len)
 	unsigned long total;
 	register int i,j,b,x,n,match;
 	char *units[len],comb[len+2];
+	float percent,p;
 
 	total = 0;
 	match = 0;
@@ -82,6 +84,7 @@ int matchcombs(char *chars,int len)
 	b = len-1;
 	x = b-1;
 	n = strlen(chars);
+	p = PER_BASE;
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
@@ -124,12 +127,14 @@ int uniquecombs(char *chars,int len)
 	register int i,j,b,x,n;
 	int match;
 	char *units[len],comb[len+2];
+	float percent,p;
 
 	comb[len] = '\n';
 	comb[len+1] = '\0';
 	b = len-1;
 	x = b-1;
 	n = strlen(chars);
+	p = PER_BASE;
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
@@ -174,6 +179,7 @@ int singlecombs(char *chars,int len)
 	register int i,j,k,b,x,s,match;
 	int n;
 	char *units[len],comb[len],scomb[len+2];
+	float percent,p;
 
 	comb[len] = '\n';
 	comb[len+1] = '\0';
@@ -181,6 +187,7 @@ int singlecombs(char *chars,int len)
 	x = b - 1;
 	n = strlen(chars);
 	s = 1;
+	p = PER_BASE;
 
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;

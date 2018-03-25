@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
 	fp = NULL;
 
 	if (argc < 3)
-		error("Usage: %s 6 0123456789\n",prog);
+		error("Usage: %s  -l 6 0123456789 filename\n",prog);
 
 	readargs(argc,argv);
 	expand(expchars);
