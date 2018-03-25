@@ -141,6 +141,7 @@ int matchcombs(char *chars,int len)
 		for (;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
 		x = b-1;
+
 		if (save && percent >= save) { 
 			for (j = 0; j < len ; j++)
 				comb[j] =* units[j];
@@ -167,6 +168,11 @@ int uniquecombs(char *chars,int len)
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
+
+	if (restore && (r_file = fopen("save.txt","r"))){
+		set_restore(units,chars,&current_cmbs);
+		fclose(r_file);
+	}
 
 	while (*units[0]){
 		for (i = 0; i < n ; ++i){			
@@ -197,6 +203,13 @@ int uniquecombs(char *chars,int len)
 		for (;x >= 0 && *++units[x] == '\0';--x)
 			units[x] -= x ? n : 0;
 		x = b-1;
+		
+		if (save && percent >= save) { 
+			for (j = 0; j < len ; j++)
+				comb[j] =* units[j];
+			set_save(comb,chars,(long) current_cmbs,percent,len);
+		}
+
 	}
 	if (piped != 1)
 		fprintf(stderr, "100%c complete\n",'%');
@@ -221,6 +234,11 @@ int singlecombs(char *chars,int len)
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
 
+	if (restore && (r_file = fopen("save.txt","r"))){
+		set_restore(units,chars,&current_cmbs);
+		fclose(r_file);
+	}
+
 	while (*units[0]){
 		for (i = 0; i < n ; ++i){
 			for (j = 0; j < len ; ++j){
@@ -244,7 +262,7 @@ int singlecombs(char *chars,int len)
 							fputs(new_comb,fp);
 						}else
 							fputs(comb,fp);
-						if (((percent =  current_cmbs / total_cmbs * 100.0)) == p){	/* If percentage base or multiple has been reached*/
+						if (((percent =  current_cmbs / total_cmbs * 100.0)) >= p){	/* If percentage base or multiple has been reached*/
 							fprintf(stderr, "%.0f%% complete\n",percent);
 							p += PER_BASE; 
 						}
@@ -258,6 +276,12 @@ int singlecombs(char *chars,int len)
 		for (; x >= 0 && !*++units[x] ;--x)
 			units[x] -= x ? n : 0;
 		x = b -1;
+
+		if (save && percent >= save) { 
+			for (j = 0; j < len ; j++)
+				comb[j] =* units[j];
+			set_save(comb,chars,(long) current_cmbs,percent,len);
+		}
 	}
 	if (piped != 1)
 		fprintf(stderr, "100%% complete\n");
