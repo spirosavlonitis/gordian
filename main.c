@@ -12,7 +12,7 @@ int main(int argc,char *argv[])
 {
 	char expchars[MAX_CHARS];
 
-	matching = unique = single = piped = bknown = 0;
+	matching = unique = single = piped = bknown = save = restore = 0;
 	prog = *argv++;
 	chars = NULL;
 	fp = NULL;

@@ -51,6 +51,7 @@ int allcombs(char *chars,int len)
 				if (save && percent >= save) {
 					s_file = fopen("save.txt","w");
 					fputs(comb,s_file);
+					fprintf(s_file,"%f\n",percent);
 					error("Restore point set\n");
 				}
 			}
