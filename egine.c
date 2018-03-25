@@ -30,6 +30,7 @@ int allcombs(char *chars,int len)
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
 	
+	/* restore section */
 	if (restore && (r_file = fopen("save.txt","r"))){
 		set_restore(units,chars,&current_cmbs);
 		fclose(r_file);
@@ -56,9 +57,6 @@ int allcombs(char *chars,int len)
 					p += PER_BASE;
 				}
 
-				/* Save section */
-				if (save && percent >= save) 
-					set_save(comb,chars,(long) current_cmbs,percent,len);
 			}
 			/* increment the rightmost char */
 			units[b]++;
@@ -78,6 +76,12 @@ int allcombs(char *chars,int len)
 			units[x] -= x ? n : 0; /* reset all but the very left index */
 		/* reset x to one inxed less than the righmost index */
 		x = b-1;
+		/* Save section */
+		if (save && percent >= save) { 
+			for (j = 0; j < len ; j++)
+				comb[j] =* units[j];
+			set_save(comb,chars,(long) current_cmbs,percent,len);
+		}
 	}
 	return 0;
 }
@@ -102,6 +106,11 @@ int matchcombs(char *chars,int len)
 
 	for (i = 0; i < len; ++i)
 		units[i] = chars;
+
+	if (restore && (r_file = fopen("save.txt","r"))){
+		set_restore(units,chars,&current_cmbs);
+		fclose(r_file);
+	}
 
 	while (*units[0]){
 		for (i = 0; i < n ; ++i,match = 0){	
