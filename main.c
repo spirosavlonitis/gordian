@@ -17,7 +17,7 @@ int main(int argc,char *argv[])
 	chars = NULL;
 	fp = NULL;
 
-	if (argc < 3)
+	if (argc < 2)
 		error("Usage: %s  -l 6 0123456789 filename\n",prog);
 
 	readargs(argc,argv);
@@ -44,6 +44,8 @@ int main(int argc,char *argv[])
 	
 	exit(0);
 }
+
+static void help_message(void);
 
 static void readargs(int argc,char **argv)
 {
@@ -96,7 +98,9 @@ static void readargs(int argc,char **argv)
 						if (strcmp("save",*argv) == 0){
 							save = atoi(*++argv);
 							*argv += strlen(*argv) -1;
-						}else
+						}else if (strcmp("help",*argv) == 0)
+							help_message();
+						else
 							error("%s: unknown option %s\n",prog,*argv);
 						break;
 					default:
@@ -135,6 +139,24 @@ static void expand(char *expchars)
 		}else
 			expchars[j++] = chars[i];
 	expchars[j]	= '\0';
+}
+
+static void help_message(void)
+{
+	char *message;
+	message = "Available options:\n"\
+	"-a\tall possible combinations, if no option is given -a is implied.\n"\
+	"-m\tmatching character combinations will be generated, i.e 0112\n"\
+	"-u\tnon matching character combinations will be generated, i.e 131\n"\
+	"-s\tcombinations of unique characters will be generated,  i.e 0123\n"\
+	"-p\tcombinations are printed to the stdout stream, used for piping\n"\
+	"-b\tpattern to be added before generated combinations, i.e 12***\n"\
+	"-l\tspecifies the length of the combinations to be generated, i.e 6 or 6,7,8\n"\
+	"-r\trestore last session,i.e prog_name -rl 6 0-9 filename\n"\
+	"--save\tsaves progress to the specified percentage e.g 30.\n"\
+	"\tif restoring from 30%% and --save 60 what is generated is 30%%-60%%\n"\
+	"--help\tprints this message.\n";
+	error(message);
 }
 
 static void simplesort(int *l)
