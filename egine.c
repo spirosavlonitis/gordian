@@ -6,6 +6,7 @@
 #define MAX_WORD	1000
 #define PER_BASE 	20.0
 
+static void set_save(char *,char *,long,double);
 static void set_restore(char **,char *,double *);
 
 static double current_cmbs = 0.0;
@@ -25,15 +26,15 @@ int allcombs(char *chars,int len)
 	comb[len+1] = '\0';
 	p = PER_BASE;
 
-
+	/* Load charactets */
 	for (i = 0; i < len ; ++i)
 		units[i] = chars;
 	
-	if (restore && (r_file = fopen("save.txt","r"))) 
+	if (restore && (r_file = fopen("save.txt","r"))){
 		set_restore(units,chars,&current_cmbs);
-	
-	printf("%.0f\n",current_cmbs);
-	exit(1);
+		fclose(r_file);
+	}
+
 	while (*units[0]){
 		/*iterate n times so that each units[b]++ can be printed */
 		for (i = 0; i < n ; ++i){
@@ -56,13 +57,8 @@ int allcombs(char *chars,int len)
 				}
 
 				/* Save section */
-				if (save && percent >= save) {
-					s_file = fopen("save.txt","w");
-					fprintf(s_file,"%s%ld\n",comb,(long) current_cmbs);
-					fprintf(stderr, "%.0f%% complete\n",percent);
-					fclose(s_file);
-					error("Restore point set\n");
-				}
+				if (save && percent >= save) 
+					set_save(comb,chars,(long) current_cmbs,percent);
 			}
 			/* increment the rightmost char */
 			units[b]++;
@@ -253,16 +249,26 @@ int singlecombs(char *chars,int len)
 	return 0;
 }
 
+/* Set save point */
+static void set_save(char *comb,char *chars,long current_cmbs,double percent)
+{
+	s_file = fopen("save.txt","w");
+	fprintf(s_file,"%s%ld\n",comb,current_cmbs);
+	fprintf(stderr, "%.0f%% complete\n",percent);
+	fclose(s_file);
+	error("Restore point set\n");
+}
+
 /* Set restore point */
 static void set_restore(char **units,char *chars,double *current_cmbs)
 {
 	char c;
 	int i;
+
 	/* Set units saved combination */
 	for (i = 0; (c = getc(r_file)) != '\n' ; ++i)
 		while(*units[i] != c)
 			++units[i];
-	++units[i-1];
 
 	/* Set current_cmbs to saved combs */
 	for (i = 0; (c = getc(r_file)) != '\n' ; ++i)
