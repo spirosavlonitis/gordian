@@ -21,13 +21,14 @@ int main(int argc,char *argv[])
 		error("Usage: %s  -l 6 0123456789 filename\n",prog);
 
 	readargs(argc,argv);
-	expand(expchars);
-	simplesort(len);
-
 	if (chars == NULL)
 		error("No characters entered !!\n");
 	else if (fp == NULL && piped == 0)
 		error("No file name provided !!\n");
+	
+	expand(expchars);
+	simplesort(len);
+
 
 	if (!piped){
 		if ((fp = fopen(fname,"w")) == NULL)
