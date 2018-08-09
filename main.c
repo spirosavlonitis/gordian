@@ -54,9 +54,9 @@ static void readargs(int argc,char **argv)
 
 	j = 0;
 	for (; --argc > 0 ;argv++){
-		if (**argv == '-')
-			while(*++*argv)
-				switch (**argv){
+		if (**argv == '-') {
+			while(*++*argv) {
+				switch (**argv) {
 					case 'p':
 						piped = 1;
 						break;
@@ -87,6 +87,7 @@ static void readargs(int argc,char **argv)
 					case 'b':
 						bknown = 1;
 						bpattern = strdup(*++argv);
+						(*argv) += strlen(bpattern) - 1;
 						--argc;
 						break;
 					case 'r':
@@ -106,6 +107,8 @@ static void readargs(int argc,char **argv)
 					default:
 						error("unknown option %c \n",**argv);
 						break;
+				}
+			  }	
 			}else if (chars == NULL)
 				chars = strdup(*argv);
 			else if (!piped && chars)
