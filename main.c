@@ -23,14 +23,11 @@ int main(int argc,char *argv[])
 	readargs(argc,argv);
 	if (chars == NULL)
 		error("No characters entered !!\n");
-	else if (fp == NULL && piped == 0)
-		error("No file name provided !!\n");
 	
 	expand(expchars);
 	simplesort(len);
 
-
-	if (!piped){
+	if (piped == 0){
 		if ((fp = fopen(fname,"w")) == NULL)
 			error("%s: couldn't open %s\n",prog,fname);
 		sizecalc(strlen(expchars),len);
