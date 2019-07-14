@@ -54,8 +54,9 @@ static void readargs(int argc,char **argv)
 
 	j = 0;
 	for (; --argc > 0 ;argv++){
-		if (**argv == '-')
-			while(*++*argv)
+		if (**argv == '-') {
+			while(isalpha(*++*argv)) {			// pacthed -b using isalpha
+				printf("%s\n", *argv);
 				switch (**argv){
 					case 'p':
 						piped = 1;
@@ -98,18 +99,21 @@ static void readargs(int argc,char **argv)
 						if (strcmp("save",*argv) == 0){
 							save = atoi(*++argv);
 							*argv += strlen(*argv) -1;
-						}else if (strcmp("help",*argv) == 0)
+						}else if (strcmp("help",*argv) == 0){
 							help_message();
-						else
+						}else{
 							error("%s: unknown option %s\n",prog,*argv);
+						}
 						break;
 					default:
 						error("unknown option %c \n",**argv);
 						break;
-			}else if (chars == NULL)
-				chars = strdup(*argv);
-			else if (!piped && chars)
-				fname = strdup(*argv);
+				}
+			}
+		}else if (chars == NULL)
+			chars = strdup(*argv);
+		else if (!piped && chars)
+			fname = strdup(*argv);
 	}
 	len[j] = 0;
 
