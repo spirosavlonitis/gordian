@@ -21,10 +21,13 @@ int main(int argc,char *argv[])
 		error("Usage: %s  -l 6 0123456789 filename\n",prog);
 
 	readargs(argc,argv);
+	if (chars == NULL)
+		error("No characters entered !!\n");
+	
 	expand(expchars);
 	simplesort(len);
 
-	if (!piped){
+	if (piped == 0){
 		if ((fp = fopen(fname,"w")) == NULL)
 			error("%s: couldn't open %s\n",prog,fname);
 		sizecalc(strlen(expchars),len);
@@ -56,7 +59,6 @@ static void readargs(int argc,char **argv)
 	for (; --argc > 0 ;argv++){
 		if (**argv == '-') {
 			while(isalpha(*++*argv)) {			// pacthed -b using isalpha
-				printf("%s\n", *argv);
 				switch (**argv){
 					case 'p':
 						piped = 1;
@@ -88,6 +90,7 @@ static void readargs(int argc,char **argv)
 					case 'b':
 						bknown = 1;
 						bpattern = strdup(*++argv);
+						(*argv) += strlen(bpattern) - 1;
 						--argc;
 						break;
 					case 'r':
@@ -109,11 +112,11 @@ static void readargs(int argc,char **argv)
 						error("unknown option %c \n",**argv);
 						break;
 				}
-			}
-		}else if (chars == NULL)
-			chars = strdup(*argv);
-		else if (!piped && chars)
-			fname = strdup(*argv);
+			  }	
+			}else if (chars == NULL)
+				chars = strdup(*argv);
+			else if (!piped && chars)
+				fname = strdup(*argv);
 	}
 	len[j] = 0;
 
